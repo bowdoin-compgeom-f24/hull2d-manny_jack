@@ -30,6 +30,9 @@ Figure out the details of graham_scan and handle degeneracies in input
 
 6. Time you spent in: Thinking; Programming; Testing; Documenting; Total
 
+Jack - Thinking: 1hour Programming: 30mins Testing: 30mins Documenting: Total:
+Manny - Thinking:  Programming:  Testing:  Documenting:  Total:
+
 7. Brief reflection prompts (you don’t need to address all): how challenging did you find this project? what did you learn by doing this project? What did you wish you did differently? If you worked as a team, how did that go? What would you like to explore further?
 
 ## Brief Description:
