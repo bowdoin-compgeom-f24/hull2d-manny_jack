@@ -116,6 +116,7 @@ void initialize_points_circle(vector<point2d>& pts, int n);
 void initialize_points_horizontal_line(vector<point2d>&pts, int n);
 void initialize_points_random(vector<point2d>&pts, int n) ;
 void initialize_points_cross(vector<point2d>&pts, int n) ;
+void initialize_points_heart(vector<point2d>& pts, int n) ;
 
 //you'll add more 
 
@@ -123,6 +124,19 @@ void initialize_points_cross(vector<point2d>&pts, int n) ;
 /********************************************************************/
 
 
+// void initialize_points_heart(vector<point2d>& pts, int n) {
+//   printf("\ninitialize points heart\n"); 
+//   //clear the vector just to be safe 
+//   pts.clear(); 
+//   double t = 0.01;
+//   point2d p;
+//   for (double a = 0; a<2*M_PI; a+=t){
+//       p.x = 16 * sin(a)*sin(a)*sin(a);
+//       p.y = 13 * cos(a) - 5*cos(2*a) - 2*cos(3*a) - cos(4*a);
+//       pts.push_back(p);
+//   }
+//   printf("heart: initialized with %lu points\n", pts.size());
+// }
 
 
 
@@ -425,7 +439,7 @@ void keypress(unsigned char key, int x, int y) {
       break; 
     case 3: 
       initialize_points_random(points, NPOINTS); 
-      break; 
+      break;
     } //switch 
     //we changed the points, so we need to recompute the hull
     graham_scan(points, hull); 

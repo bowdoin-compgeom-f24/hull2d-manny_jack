@@ -55,7 +55,6 @@ int left_on(point2d a, point2d b, point2d c) {
   }
 
 
-
 // compute the convex hull of pts, and store the points on the hull in hull
 void graham_scan(vector<point2d>& pts, vector<point2d>& hull ) {
 
@@ -75,8 +74,50 @@ void graham_scan(vector<point2d>& pts, vector<point2d>& hull ) {
         startPoint = pts[i];
       }
     }
-    hull.push_back(startPoint);
   }
+  std::swap(startPoint, pts[0]);
+  // sort the remainding points in order of their ccw angle with respect to startPoint
+  for (int i=1; i< pts.size() - 1; i++) {
+    for (int j=1; j< pts.size() - i; j++) {
+      double angle1 = atan2(pts[j].y - pts[0].y, pts[j].x - pts[0].x);
+      double angle2 = atan2(pts[j + 1].y - pts[0].y, pts[j + 1].x - pts[0].x);
+
+      if (angle1 > angle2) {
+          std::swap(pts[j], pts[j + 1]);
+      }
+    }
+  }
+  hull.push_back(pts[0]);
+  hull.push_back(pts[1]);
+
+  printf("hull size %lu", hull.size());
+
+  for (int i = 2; i < pts.size(); i++) {
+      if (left_strictly(hull[hull.size()-1], hull[hull.size()-2], pts[i]) == 1){
+        hull.push_back(pts[i]);
+      } 
+      else {
+        while (hull.size() > 1 && left_strictly(hull[hull.size()-1], hull[hull.size()-2], pts[i]) == 0){
+          hull.pop_back();
+        }
+        hull.push_back(pts[i]);
+      }
+  }
+
+
+  //Initialize stack
+
+  //for i=3 to n-1:
+      // while pi is to the right of (second(S), first(S))
+          //pop S
+      //push pi to S
+  printf("hull size %lu", hull.size());
+  
+  printf("hull2d (graham scan): end\n"); 
+  return; 
+}
+
+
   //print statements for testing:
       // printf("(%d, %d) point:", pts[0].x, pts[0].y);
       // printf("(%d, %d) point:", pts[5].x, pts[5].y);
@@ -85,21 +126,7 @@ void graham_scan(vector<point2d>& pts, vector<point2d>& hull ) {
       // printf("(%d)", left_on(pts[0], pts[5], pts[2]));
       // printf("(%d)", collinear (pts[0], pts[5], pts[2]));
       // printf("(%d)", signed_area2D (pts[0], pts[5], pts[2]));
-
-
-  //sort the remainding points in order of their ccw angle with respect to startPoint
-  for (int i=1; i< pts.size(); i++) {
-    double angle = atan2(pts[i].y - startPoint.y, pts[i].x - startPoint.x);
-  }
-  //Initialize stack
-
-  //for i=3 to n-1:
-      // while pi is to the right of (second(S), first(S))
-          //pop S
-      //push pi to S
-
-  
-  printf("hull2d (graham scan): end\n"); 
-  return; 
-}
-
+      //   printf("original start point: %d %d", startPoint.x, startPoint.y);
+      // printf("x: %d %d", pts[0].x, pts[0].y);
+      //  printf("new start point: %d %d", startPoint.x, startPoint.y);
+  //    printf("new x: %d %d", pts[0].x, pts[0].y);
