@@ -24,8 +24,8 @@ LIBPATH = -L/usr/lib64 -L/usr/X11R6/lib
 LDFLAGS+=  -lGL -lglut -lrt -lGLU -lX11 -lm  -lXmu -lXext -lXi
 endif
 
-
-CC = g++ -O3 -Wall $(INCLUDEPATH)
+# added -std=c+11 to use C++11 to use lambda functions
+CC = g++ -std=c++11 -O3 -Wall $(INCLUDEPATH)
 
 
 PROGS = hull2d
