@@ -64,7 +64,7 @@ int lowest_point(vector<point2d>& pts) {
         point2d currPoint = pts[i];
         // printf("Current Point: (%d, %d)\n", currPoint.x, currPoint.y);
         // printf("Current Min: %d\n", minY);
-        if (pts[i].y < minY){ 
+        if (currPoint.y < minY){
           minY = pts[i].y;
           lowestIdx = i;
         }
@@ -118,7 +118,7 @@ void graham_scan(vector<point2d>& pts, vector<point2d>& hull ) {
   point2d referencePoint = pts[referenceIndex];
   std::swap(pts[referenceIndex], pts[0]);
 
-  // lambda function uses angles to sort radially
+  // passed a lambda function that uses compare func that compares radially
   sort(pts.begin(), pts.end(), [referencePoint](const point2d& a, const point2d& b) {
     return compare_angle(referencePoint, a, b);
   });
