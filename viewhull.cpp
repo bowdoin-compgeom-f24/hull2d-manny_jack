@@ -116,7 +116,7 @@ void initialize_points_circle(vector<point2d>& pts, int n);
 void initialize_points_horizontal_line(vector<point2d>&pts, int n);
 void initialize_points_random(vector<point2d>&pts, int n) ;
 void initialize_points_cross(vector<point2d>&pts, int n) ;
-void initialize_points_heart(vector<point2d>& pts, int n) ;
+void initialize_points_diamond(vector<point2d>& pts, int n) ;
 
 //you'll add more 
 
@@ -248,8 +248,34 @@ void initialize_points_cross(vector<point2d>& pts, int n) {
 
 }
 
+void initialize_points_wave(vector<point2d>& pts, int n){
 
+printf("\ninitialize points wave\n"); 
+  //clear the vector just to be safe 
+  pts.clear(); 
 
+  double step = (double)WINDOWSIZE / n;
+  double amplitude = 100;  // Height of the wave
+  double frequency = 0.1;  // Controls the number of waves
+  
+  point2d p;
+  
+  for (int i = 0; i < n; ++i) {
+    p.x = i * step;
+    p.y = WINDOWSIZE / 2 + amplitude * sin(frequency * p.x);
+    pts.push_back(p);
+  }
+}
+
+void initialize_points_diamond(vector<point2d>& pts, int n) {
+
+  printf("\ninitialize points triangle\n");
+  pts.clear();
+  point2d p;
+  for (int i = 0; i < n; i++) {
+    pts.push_back(p);
+  }
+}
 
 /* ****************************** */
 /* print the vector of points */
@@ -261,8 +287,6 @@ void print_vector(const char* label, vector<point2d> points) {
   }
   printf("\n");
 }
-
-
 
 
 
@@ -437,6 +461,9 @@ void keypress(unsigned char key, int x, int y) {
     case 2: 
       initialize_points_horizontal_line(points, NPOINTS); 
       break; 
+   // case 3: 
+    //  initialize_points_diamond(points, NPOINTS); 
+    //  break; 
     case 3: 
       initialize_points_random(points, NPOINTS); 
       break;
