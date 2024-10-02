@@ -277,6 +277,71 @@ void initialize_points_diamond(vector<point2d>& pts, int n) {
   }
 }
 
+//you'll add more 
+/* ****************************** */
+// Helper function to check if a point is inside a convex polygon
+bool is_point_in_polygon(const point2d& p, const vector<point2d>& polygon) {
+    int n = polygon.size();
+    double angle = 0;
+
+    for (int i = 0; i < n; i++) {
+        point2d p1 = {polygon[i].x - p.x, polygon[i].y - p.y};
+        point2d p2 = {polygon[(i + 1) % n].x - p.x, polygon[(i + 1) % n].y - p.y};
+        double cross = p1.x * p2.y - p2.x * p1.y;
+        double dot = p1.x * p2.x + p1.y * p2.y;
+        angle += atan2(cross, dot);
+    }
+
+    return fabs(fabs(angle) - 2 * M_PI) < 1e-6;  // Check if the angle is approximately 2π
+}
+
+// Function to initialize points in a hexagon
+void initialize_points_hexagon(vector<point2d>& pts, int n) {
+    pts.clear();
+
+    // Define the center of the hexagon
+    double centerX = WINDOWSIZE / 2.0;
+    double centerY = WINDOWSIZE / 2.0;
+
+    // Set the radius of the hexagon (distance from center to any vertex)
+    double radius = WINDOWSIZE / 4.0;
+
+    // Number of sides for the hexagon
+    int numSides = 6;
+
+    // Angle between each vertex
+    double angleStep = 2 * M_PI / numSides;
+
+    // Add hexagon vertices
+    vector<point2d> hexagonVertices;
+    for (int i = 0; i < numSides; ++i) {
+        point2d p;
+        p.x = centerX + radius * cos(i * angleStep);
+        p.y = centerY + radius * sin(i * angleStep);
+        pts.push_back(p);  // Store the hexagon vertices in the pts list
+        hexagonVertices.push_back(p);  // Store the hexagon vertices separately for point-in-polygon check
+    }
+
+    // Add random points inside the hexagon boundary
+    int generatedPoints = 0;
+
+    while (generatedPoints < n) {
+        point2d p;
+
+        // Generate a random point within a bounding box around the hexagon
+        p.x = centerX + (((double)rand() / RAND_MAX) * 2 - 1) * radius;
+        p.y = centerY + (((double)rand() / RAND_MAX) * 2 - 1) * radius;
+
+        if (is_point_in_polygon(p, hexagonVertices)) {
+            pts.push_back(p);
+            generatedPoints++;
+        }
+    }
+
+    printf("Hexagon: initialized with %lu points\n", pts.size());
+}
+
+
 /* ****************************** */
 /* print the vector of points */
 void print_vector(const char* label, vector<point2d> points) {
@@ -304,6 +369,7 @@ int main(int argc, char** argv) {
 
   //populate the points 
   initialize_points_random(points, NPOINTS);
+  initialize_points_hexagon(points, NPOINTS);
   //print_vector("points:", points);
 
   //compute the convex hull 
