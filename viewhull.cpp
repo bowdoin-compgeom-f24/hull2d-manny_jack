@@ -79,11 +79,11 @@ vector<point2d>  hull;
 //window size for the graphics window
 const int WINDOWSIZE = 500; 
 
-/* currently there are 4 different ways to initialize points.  The
+/* currently there are 10 different ways to initialize points.  The
    user can cycle through them by pressing 'i'. Check out the display()
    function.
 */
-int NB_INIT_CHOICES = 4; 
+int NB_INIT_CHOICES = 10; 
 int  POINT_INIT_MODE = 0; //the first inititalizer
 
 
@@ -95,7 +95,6 @@ int  POINT_INIT_MODE = 0; //the first inititalizer
 
 //print label, then the vector 
 void print_vector(const char* label, vector<point2d> p); 
-
 
 
 /* render the points. Each point is drawn as a small square.  */
@@ -117,28 +116,6 @@ void initialize_points_horizontal_line(vector<point2d>&pts, int n);
 void initialize_points_random(vector<point2d>&pts, int n) ;
 void initialize_points_cross(vector<point2d>&pts, int n) ;
 void initialize_points_diamond(vector<point2d>& pts, int n) ;
-
-//you'll add more 
-
-
-/********************************************************************/
-
-
-// void initialize_points_heart(vector<point2d>& pts, int n) {
-//   printf("\ninitialize points heart\n"); 
-//   //clear the vector just to be safe 
-//   pts.clear(); 
-//   double t = 0.01;
-//   point2d p;
-//   for (double a = 0; a<2*M_PI; a+=t){
-//       p.x = 16 * sin(a)*sin(a)*sin(a);
-//       p.y = 13 * cos(a) - 5*cos(2*a) - 2*cos(3*a) - cos(4*a);
-//       pts.push_back(p);
-//   }
-//   printf("heart: initialized with %lu points\n", pts.size());
-// }
-
-
 
 
 /* ****************************** */
@@ -172,9 +149,6 @@ void initialize_points_circle(vector<point2d>& pts, int n) {
 }
 
 
-
-
-
 /* ****************************** */
 /* Initializes pts with n points on a line.  The points are in the
    range [0, WINSIZE] x [0, WINSIZE].
@@ -194,8 +168,6 @@ void initialize_points_horizontal_line(vector<point2d>& pts, int n) {
 }
 
 
-
-
 /* ****************************** */
 /* Initializes pts with n random points.  The points are in the
    range [0, WINSIZE] x [0, WINSIZE].
@@ -213,8 +185,6 @@ void initialize_points_random(vector<point2d>& pts, int n) {
     pts.push_back(p); 
   }
 }
-
-
 
 
 /* ****************************** */
@@ -248,8 +218,9 @@ void initialize_points_cross(vector<point2d>& pts, int n) {
 
 }
 
-void initialize_points_wave(vector<point2d>& pts, int n){
 
+// Function to initialize points in a wave shape based on the sine function
+void initialize_points_wave(vector<point2d>& pts, int n){
 printf("\ninitialize points wave\n"); 
   //clear the vector just to be safe 
   pts.clear(); 
@@ -267,17 +238,7 @@ printf("\ninitialize points wave\n");
   }
 }
 
-void initialize_points_diamond(vector<point2d>& pts, int n) {
 
-  printf("\ninitialize points triangle\n");
-  pts.clear();
-  point2d p;
-  for (int i = 0; i < n; i++) {
-    pts.push_back(p);
-  }
-}
-
-//you'll add more 
 /* ****************************** */
 // Helper function to check if a point is inside a convex polygon
 bool is_point_on_polygon(const point2d& p, const vector<point2d>& polygon) {
@@ -294,6 +255,7 @@ bool is_point_on_polygon(const point2d& p, const vector<point2d>& polygon) {
 
     return fabs(fabs(angle) - 2 * M_PI) < 1e-6;  // Check if the angle is approximately 2π
 }
+
 
 // Function to initialize points in a hexagon
 void initialize_points_hexagon(vector<point2d>& pts, int n) {
@@ -341,6 +303,7 @@ void initialize_points_hexagon(vector<point2d>& pts, int n) {
     printf("Hexagon: initialized with %lu points\n", pts.size());
 }
 
+
 void initialize_points_two_vertical(vector<point2d>& pts, int n) {
   
   printf("\ninitialize points that make two vertical lines.\n"); 
@@ -359,6 +322,7 @@ void initialize_points_two_vertical(vector<point2d>& pts, int n) {
     pts.push_back(p); 
   }
 }
+
 
 void initialize_points_1(vector<point2d>&pts, int n){
   printf("\ninitialize points 1\n"); 
@@ -440,6 +404,7 @@ void initialize_points_2(vector<point2d>&pts, int n){
   }
 }
 
+
 void initialize_points_thin_cross(vector<point2d>&pts, int n) {
   printf("\ninitialize points thin cross\n");
   pts.clear();
@@ -513,7 +478,6 @@ void print_vector(const char* label, vector<point2d> points) {
 }
 
 
-
 /* ****************************** */
 int main(int argc, char** argv) {
 
@@ -526,19 +490,8 @@ int main(int argc, char** argv) {
   printf("you entered n=%d\n", NPOINTS);
   assert(NPOINTS >0); 
 
-  //populate the points 
-  // initialize_points_random(points, NPOINTS);
-  // From Manny
-  initialize_points_hexagon(points, NPOINTS);
-  // From Ziyou Hu
-  // initialize_points_two_vertical(points, NPOINTS);
-  // From Tom
-  // initialize_points_1(points, NPOINTS);
-  // initialize_points_2(points, NPOINTS);
-  // From Max and Abhi
-  // initialize_points_thin_cross(points, NPOINTS);
-  // From Zelia
-  // initialize_points_square(points, NPOINTS);
+  // // populate the points 
+  initialize_points_random(points, NPOINTS);
 
   Rtimer rt1; 
   rt_start(rt1); 
@@ -575,8 +528,6 @@ int main(int argc, char** argv) {
 }
 
 
-
-
 /* ****************************** */
 /* This is the function that renders the window. We registered this
    function as the "displayFunc". It will be called by GL everytime
@@ -610,8 +561,6 @@ void display(void) {
 }
 
 
-
-
 /* ****************************** */
 /* draw the points. each point is drawn as a small square
 */
@@ -635,9 +584,6 @@ void draw_points(vector<point2d> points){
     glEnd();
   }
 } //draw_points 
-
-
-
 
 
 /* ****************************** */
@@ -671,7 +617,6 @@ void draw_hull(vector<point2d> hull){
 }
 
 
-
 /* ****************************** */
 /* Handler for key presses. called whenever a key is spressed */
 void keypress(unsigned char key, int x, int y) {
@@ -694,10 +639,28 @@ void keypress(unsigned char key, int x, int y) {
     case 2: 
       initialize_points_horizontal_line(points, NPOINTS); 
       break; 
-   // case 3: 
-    //  initialize_points_diamond(points, NPOINTS); 
-    //  break; 
     case 3: 
+      initialize_points_hexagon(points, NPOINTS);
+     break; 
+    case 4: 
+      initialize_points_two_vertical(points, NPOINTS);
+     break; 
+    case 5: 
+      initialize_points_1(points, NPOINTS);
+     break; 
+    case 6: 
+      initialize_points_2(points, NPOINTS);
+     break; 
+    case 7: 
+      initialize_points_thin_cross(points, NPOINTS);
+     break; 
+    case 8: 
+      initialize_points_square(points, NPOINTS);
+     break; 
+    case 9: 
+      initialize_points_wave(points, NPOINTS);
+     break; 
+    case 10: 
       initialize_points_random(points, NPOINTS); 
       break;
     } //switch 
@@ -707,8 +670,8 @@ void keypress(unsigned char key, int x, int y) {
     //we changed stuff, so we need to tell GL to redraw
     glutPostRedisplay();
 
+    print_vector("hull:", hull);
+
   } //switch (key)
 
 }//keypress
-
-

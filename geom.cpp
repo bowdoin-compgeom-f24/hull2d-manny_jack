@@ -14,11 +14,8 @@ using namespace std;
  */
 int signed_area2D(point2d a, point2d b, point2d c) {
   int area = ((a.x * (b.y - c.y)) + (b.x * (c.y - a.y)) + (c.x *(a.y - b.y)));
-  // const double EPSILON = 10^-6
-  // EPSIOLON < area < EPSILON
   return area; 
 }
-
 
 
 /* **************************************** */
@@ -31,7 +28,6 @@ int collinear(point2d p, point2d q, point2d r) {
     return 0;
   }
 }
-
 
 
 /* **************************************** */
@@ -52,6 +48,7 @@ void print_points(vector<point2d>& pts) {
       printf("Point %d: (%d, %d) \n", i, currPoint.x, currPoint.y);
   }
 }
+
 
 /* **************************************** */
 /* returns the index of the point with the minimum Y coordinate*/
@@ -76,8 +73,8 @@ int lowest_point(vector<point2d>& pts) {
 }
 
 
-// create a compare function and use the qsort function
-
+/* **************************************** */
+/* return 1 if a has a smaller angle wtr to reference point than b*/
 bool compare_angle(const point2d& reference, const point2d& a, const point2d& b ) {
   // check the angles wrt reference
   // use signed area function
@@ -95,6 +92,7 @@ bool compare_angle(const point2d& reference, const point2d& a, const point2d& b 
   return (result > 0) ? 1 : 0;
 }
 
+
 /* **************************************** */
 /* return 1 if c is left of ab or on ab; 0 otherwise */
 int left_on(point2d& a, const point2d& b, const point2d& c) {
@@ -105,8 +103,10 @@ int left_on(point2d& a, const point2d& b, const point2d& c) {
       return 0;
     }
   }
+  
 
-
+/* **************************************** */
+/* computes the convex hull of a set of points, ensuring only the extreme points are included */
 void graham_scan(vector<point2d>& pts, vector<point2d>& hull) {
     hull.clear();  // Clear the hull to be safe
 
@@ -128,65 +128,10 @@ void graham_scan(vector<point2d>& pts, vector<point2d>& hull) {
 
     for (int i = 3; i < pts.size(); i++) {
         while (hull.size() > 1 && !left_strictly(hull[hull.size() - 2], hull[hull.size() - 1], pts[i])) {
-            hull.pop_back();  // Remove point if it's not a left turn
+            hull.pop_back();  // Remove point if it's not a left turn (including if the point is colinear)
         }
         hull.push_back(pts[i]);
     }
 }
-
-
-
-
-
-// // // TODO: figure out why hull is incorrect when n < 960 
-// // // compute the convex hull of pts, and store the points on the hull in hull
-// void graham_scan_alt(vector<point2d>& pts, vector<point2d>& hull ) {
-
-//   hull.clear(); //should be empty, but clear it to be safe
-
-//   //calculates the point with the minimum Y value (reference point) and make first in vector
-//   int referenceIndex = lowest_point(pts);
-//   point2d referencePoint = pts[referenceIndex];
-//   std::swap(pts[referenceIndex], pts[0]);
-
-//   // passed a lambda function that uses compare func that compares radially
-//   stable_sort(pts.begin(), pts.end(), [referencePoint](const point2d& a, const point2d& b) {
-//     return compare_angle(referencePoint, a, b);
-//   });
-
-//   hull.push_back(pts[0]);
-//   hull.push_back(pts[1]);
-
-//   printf("hull size %lu \n", hull.size());
-
-//   for (int i = 2; i < pts.size(); i++) {
-
-//     point2d currPoint = pts[i];
-//     point2d currHullPoint = hull[hull.size()-1];
-//     point2d prevHullPoint = hull[hull.size()-2];
-
-//     while (hull.size() > 1 && left_strictly(prevHullPoint, currHullPoint, currPoint) == 0){
-//       if (collinear(prevHullPoint, currHullPoint, currPoint)) {
-//             int distCurrHull = pow(currHullPoint.x - prevHullPoint.x, 2) + pow(currHullPoint.y - prevHullPoint.y, 2);
-//             int distCurr = pow(currPoint.x - prevHullPoint.x, 2) + pow(currPoint.y - prevHullPoint.y, 2);
-//             if (distCurrHull < distCurr) {
-//                 hull.pop_back();
-//             } else {
-//                 break; // Don't continue if current point is farther
-//             }
-//         } else {
-//             hull.pop_back(); // Not collinear
-//         }
-//       currHullPoint = hull[hull.size()-1];
-//       prevHullPoint = hull[hull.size()-2];
-//     }
-//     hull.push_back(pts[i]);
-//   }
-
-//   printf("hull size %lu", hull.size());
-//   printf("hull2d (graham scan): end\n"); 
-//   return; 
-// }
-  
   
   
