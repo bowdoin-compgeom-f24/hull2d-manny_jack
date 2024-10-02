@@ -280,7 +280,7 @@ void initialize_points_diamond(vector<point2d>& pts, int n) {
 //you'll add more 
 /* ****************************** */
 // Helper function to check if a point is inside a convex polygon
-bool is_point_in_polygon(const point2d& p, const vector<point2d>& polygon) {
+bool is_point_on_polygon(const point2d& p, const vector<point2d>& polygon) {
     int n = polygon.size();
     double angle = 0;
 
@@ -332,13 +332,172 @@ void initialize_points_hexagon(vector<point2d>& pts, int n) {
         p.x = centerX + (((double)rand() / RAND_MAX) * 2 - 1) * radius;
         p.y = centerY + (((double)rand() / RAND_MAX) * 2 - 1) * radius;
 
-        if (is_point_in_polygon(p, hexagonVertices)) {
+        if (is_point_on_polygon(p, hexagonVertices)) {
             pts.push_back(p);
             generatedPoints++;
         }
     }
 
     printf("Hexagon: initialized with %lu points\n", pts.size());
+}
+
+void initialize_points_two_vertical(vector<point2d>& pts, int n) {
+  
+  printf("\ninitialize points that make two vertical lines.\n"); 
+    //clear the vector just to be safe 
+  pts.clear(); 
+  
+  point2d p; 
+  for (int i=0; i<n/2; i++) {
+    p.y = (int)(.3*WINDOWSIZE)/2 + random() % ((int)(.7*WINDOWSIZE)); 
+    p.x =  WINDOWSIZE/2; 
+    pts.push_back(p); 
+  }
+    for (int i=0; i<n/2; i++) {
+    p.y = (int)(.3*WINDOWSIZE)/2 + random() % ((int)(.7*WINDOWSIZE)); 
+    p.x =  WINDOWSIZE/4; 
+    pts.push_back(p); 
+  }
+}
+
+void initialize_points_1(vector<point2d>&pts, int n){
+  printf("\ninitialize points 1\n"); 
+  pts.clear();
+  assert(pts.size() == 0);
+
+  point2d p;
+  int pos, pos2;
+  for (int i = 0; i < n; i++)
+  {
+    switch (i % 7) {
+      case 0:
+      case 1:
+        // Base
+        p.y = random() % (int)(.1*WINDOWSIZE);
+        p.y += (int) (0.15 * WINDOWSIZE);
+        p.x = random() % (int)(0.3*WINDOWSIZE);
+        p.x += (int) (0.35 * WINDOWSIZE);
+        break;
+      case 2:
+        pos = random() % (int) (0.1*WINDOWSIZE);
+        p.x = pos; p.y = pos;
+        p.x += (int) (0.4 * WINDOWSIZE);
+        p.y += (int) (0.7*WINDOWSIZE);
+        pos2 = random() % (int) (0.05*WINDOWSIZE);
+        p.x -= pos2;
+        p.y += pos2;
+        break;
+      case 3:
+        // Colinear case
+        p.x = (int)(0.25*WINDOWSIZE) + random() % ((int)(0.5*WINDOWSIZE));
+        p.y = (int) (0.10*WINDOWSIZE);
+        break;
+      default:
+        //stem
+        p.y = (int) (0.25*WINDOWSIZE);
+        p.y += random() % (int) (0.6*WINDOWSIZE);
+        p.x = (int) (0.45*WINDOWSIZE);
+        p.x += random() % (int) (0.1*WINDOWSIZE);
+        break;
+    }
+    pts.push_back(p);
+  }
+}
+
+
+void initialize_points_2(vector<point2d>&pts, int n){
+  printf("\ninitialize points 2\n"); 
+  pts.clear();
+  assert(pts.size() == 0);
+
+  point2d p;
+  int x_noise, y_noise;
+  int pos, pos2;
+  for (int i = 0; i < n; i++)
+  {
+    switch (i % 3) {
+      case 0:
+        p.x = (int)(0.25*WINDOWSIZE) + random() % ((int)(0.5*WINDOWSIZE));
+        p.y = (int) (0.15*WINDOWSIZE);
+        break;
+      case 1:
+        pos = random() % (int)(0.5*WINDOWSIZE);
+        p.x = pos; p.y = pos;
+        p.x += (int) (0.25*WINDOWSIZE);
+        p.y += (int) (0.15*WINDOWSIZE);
+        break;
+      case 2: 
+        pos2 = random() % 180;
+        p.x = (int)(0.5 * WINDOWSIZE) + (int) ((0.25*WINDOWSIZE) * cos((M_PI * pos2)/180));
+        p.y = (int)(0.65 * WINDOWSIZE) + (int) ((0.25*WINDOWSIZE) * sin((M_PI * pos2)/180));
+        break;
+    }
+    x_noise = random() % ((int) (0.05*WINDOWSIZE));
+    y_noise = random() % ((int) (0.05*WINDOWSIZE));
+    p.x += x_noise;
+    p.y += y_noise;
+    pts.push_back(p);
+  }
+}
+
+void initialize_points_thin_cross(vector<point2d>&pts, int n) {
+  printf("\ninitialize points thin cross\n");
+  pts.clear();
+  point2d p;
+  for (int i = 0; i < n; i++) {
+    // put points on horizontal line
+    if (i % 2 == 0) {
+      p.x = random() % (int)(WINDOWSIZE);
+      p.y = WINDOWSIZE/2;
+    }
+    // put points on vertical line
+    if (i % 2 == 1) {
+      p.x = WINDOWSIZE/2;
+      p.y = random() % (int)(WINDOWSIZE);
+    }
+    pts.push_back(p);
+  }
+}
+
+/* Initializes pts with n points on the sides of a square.  The square
+   has the range (WINSIZE/4,WINSIZE/4) to (3*WINSIZE/4,3*WINSIZE/4).
+*/ 
+void initialize_points_square(vector<point2d>& pts, int n) {
+  printf("\ninitialize points square\n"); 
+
+  //clear the vector just to be safe 
+  pts.clear(); 
+  int width = WINDOWSIZE / 2;
+  int start = WINDOWSIZE / 4;
+
+  //4 sides of the square w/ evenly distrubuted points
+  for (int i = 0; i < n/4; i++){
+    point2d ptop;
+    point2d pbottom;
+    double offset = (double)4 / n * width;
+    double dist = offset * i;
+    //bottom and top of square
+    ptop.x = start + dist + offset;
+    pbottom.x = start + dist;
+    //bottom
+    pbottom.y = start;
+    pts.push_back(pbottom);
+    //top
+    ptop.y = start + width;
+    pts.push_back(ptop);
+
+    point2d pleft;
+    point2d pright;
+    //sides of the square
+    pleft.y = start + dist + offset;
+    pright.y = start + dist;
+    //left side
+    pleft.x = start;
+    pts.push_back(pleft);
+    //right side of square
+    pright.x = start + width;
+    pts.push_back(pright);
+  }
 }
 
 
@@ -348,7 +507,7 @@ void print_vector(const char* label, vector<point2d> points) {
   
   printf("%s ", label);
   for (int i=0; i< points.size(); i++) {
-    printf("[%3d,%3d] ", points[i].x, points[i].y);
+    printf("[%3d, %3d] ", points[i].x, points[i].y);
   }
   printf("\n");
 }
@@ -368,11 +527,19 @@ int main(int argc, char** argv) {
   assert(NPOINTS >0); 
 
   //populate the points 
-  initialize_points_random(points, NPOINTS);
+  // initialize_points_random(points, NPOINTS);
+  // From Manny
   initialize_points_hexagon(points, NPOINTS);
-  //print_vector("points:", points);
+  // From Ziyou Hu
+  // initialize_points_two_vertical(points, NPOINTS);
+  // From Tom
+  // initialize_points_1(points, NPOINTS);
+  // initialize_points_2(points, NPOINTS);
+  // From Max and Abhi
+  // initialize_points_thin_cross(points, NPOINTS);
+  // From Zelia
+  // initialize_points_square(points, NPOINTS);
 
-  //compute the convex hull 
   Rtimer rt1; 
   rt_start(rt1); 
   graham_scan(points, hull); 
