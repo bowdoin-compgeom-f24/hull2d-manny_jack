@@ -115,8 +115,8 @@ void graham_scan(vector<point2d>& pts, vector<point2d>& hull) {
     point2d referencePoint = pts[referenceIndex];
     std::swap(pts[referenceIndex], pts[0]);
 
-    // // Sort the remaining points by their CCW angle with respect to startPoint
-      // passed a lambda function that uses compare func that compares radially
+    // Sort the remaining points by their CCW angle with respect to startPoint
+    // passed a lambda function that uses compare func that compares radially
     stable_sort(pts.begin(), pts.end(), [referencePoint](const point2d& a, const point2d& b) {
     return compare_angle(referencePoint, a, b);
   });

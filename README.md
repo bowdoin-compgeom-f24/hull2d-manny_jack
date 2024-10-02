@@ -1,28 +1,14 @@
 # hull2d-startup
-
-### Authors: Manuel Santiago, Jack Kinsella 
-FROM TOMA:
-____________________________
-2d convex hull startup code.  
-Should compile as is.
-To do: Fill in the graham_scan function and create some initializers. 
-____________________________
-
- 
+### Authors: Manuel Santiago, Jack Kinsella s
 Figure out the details of graham_scan and handle degeneracies in input
 
-## TODO:
-- Create 2 sets of Points to compute hull
-    - At least one set with colinear points
-- Write initializer function and post to #projects channel (NOT GENERAL)
-- Include 5 classmates test cases in code
+## Report:
 
+1. what sort of inputs constitute degeneracies for the algorithm and how you handled these degeneracies?
 
-1. what sort of inputs constitute degeneracies for the algorithm and how you handled these degeneracies
 The main type of inputs that constitute degeneracies are those which contain colinear points, such as points in a horizontal or vertical line, or many points along the sides of a shape. In order to handle these and ensure that the hull only contains the extreme points on the hull, we use the left_strictly function. Because the function returns a 0 for any right turns or colinear points, we pop the previous point if the result of that function is not 1. This will continue adding and popping points to the hull until we reach the final point which will be added, ensuring that the hull only contains extreme points. 
 
 2. pictures of the two initializers you created & pictures of the other initializers you used
-
 
 - Creator: Mannny
     - ![alt text](<Screenshot 2024-10-01 at 9.11.23 PM.png>)
@@ -85,9 +71,7 @@ Manny - Thinking: 1hr  Programming: 3 hrs Testing: 30mins  Documenting: Did whil
 Total: 4.5
 
 ## Brief Description:
-7. Brief reflection prompts (you don’t need to address all): how challenging did you find this 
-project? what did you learn by doing this project? What did you wish you did differently? If you
- worked as a team, how did that go? What would you like to explore further?
+7. Brief reflection prompts (you don’t need to address all): how challenging did you find this project? what did you learn by doing this project? What did you wish you did differently? If you worked as a team, how did that go? What would you like to explore further?
 
  Manny: This lab was not too challenging but getting used to C++ is what definitely slowed me down.
   For instance, I coudn't figure out why my code wouldn't compile and eventually realized it was
